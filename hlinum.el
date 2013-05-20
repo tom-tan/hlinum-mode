@@ -29,6 +29,9 @@
 ;;
 ;; You can customize the color of highlighting current line by
 ;; changing `linum-highlight-face'.
+;; By default, hlinum highlights current line only in the active buffer.
+;; To highlight current line in all buffers, change
+;; `linum-highlight-in-all-buffersp' to t.
 
 ;;; Code:
 
