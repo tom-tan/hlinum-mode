@@ -40,6 +40,12 @@
   "Face for highlighting current line"
   :group 'linum)
 
+(defcustom linum-highlight-in-all-buffersp
+  nil
+  "Non-nil means hlinum highlights current line in all buffers.
+Otherwise hlinum will highlight only in the active buffer."
+  :group 'linum)
+
 (defun hlinum-find-if (predicate seq)
   (let (ret)
     (while (and (null ret) seq)
@@ -71,7 +77,8 @@
 (defun highlight-current-line ()
   (linum-color 'linum-highlight-face))
 (defun unhighlight-current-line ()
-  (linum-color 'linum))
+  (unless linum-highlight-in-all-buffersp
+    (linum-color 'linum)))
 
 (add-hook 'pre-command-hook 'unhighlight-current-line)
 (defadvice linum-update-current (after linum-aft-cur activate)
