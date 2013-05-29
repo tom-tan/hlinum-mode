@@ -36,6 +36,7 @@
 ;;; Code:
 
 (require 'linum)
+(require 'cl-lib)
 
 (defface linum-highlight-face
     '((t (:inherit default :foreground "black"
@@ -49,21 +50,13 @@
 Otherwise hlinum will highlight only in the active buffer."
   :group 'linum)
 
-(defun hlinum-find-if (predicate seq)
-  (let (ret)
-    (while (and (null ret) seq)
-      (when (funcall predicate (car seq))
-        (setq ret (car seq)))
-      (setq seq (cdr seq)))
-    ret))
-
 (defun linum-color (face)
   "Highlight current line number by using face FACE."
   (save-excursion
     (let* ((pt (max (window-start)
                     (progn (move-beginning-of-line nil)
                            (point))))
-           (ov (hlinum-find-if
+           (ov (cl-find-if
                 (lambda (e) (stringp (overlay-get e 'linum-str)))
                 (overlays-in pt pt))))
       (when ov
