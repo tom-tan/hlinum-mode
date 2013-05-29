@@ -3,6 +3,7 @@
 ;; Copyright (C) 2011-2013  by Tomoya Tanjo
 
 ;; Author: Tomoya Tanjo <ttanjo@gmail.com>
+;; URL: http://code.google.com/p/hlinum-mode/
 ;; Keywords: convenience, extensions
 
 ;; This program is free software; you can redistribute it and/or modify
