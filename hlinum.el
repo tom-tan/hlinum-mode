@@ -52,7 +52,7 @@
 Otherwise hlinum will highlight only in the active buffer."
   :group 'linum)
 
-(defun linum-color (face)
+(defun hlinum-color (face)
   "Highlight current line number by using face FACE."
   (save-excursion
     (let* ((pt (max (window-start)
@@ -72,19 +72,19 @@ Otherwise hlinum will highlight only in the active buffer."
           (overlay-put nov 'before-string str)
           (overlay-put nov 'linum-str lstr))))))
 
-(defun highlight-current-line ()
-  (linum-color 'linum-highlight-face))
-(defun unhighlight-current-line ()
+(defun hlinum-highlight-current-line ()
+  (hlinum-color 'linum-highlight-face))
+(defun hlinum-unhighlight-current-line ()
   (unless linum-highlight-in-all-buffersp
-    (linum-color 'linum)))
+    (hlinum-color 'linum)))
 
 (defadvice linum-update-current (after linum-aft-cur)
-  (highlight-current-line))
+  (hlinum-highlight-current-line))
 (defadvice linum-after-size (after linum-aft-size)
-  (highlight-current-line))
+  (hlinum-highlight-current-line))
 (defadvice linum-after-scroll (after linum-aft-scl)
   (when (eq (current-buffer) (window-buffer))
-    (highlight-current-line)))
+    (hlinum-highlight-current-line)))
 
 ;;;###autoload
 (defun hlinum-activate ()
@@ -93,13 +93,13 @@ Otherwise hlinum will highlight only in the active buffer."
   (ad-activate 'linum-update-current 'linum-aft-cur)
   (ad-activate 'linum-after-size 'linum-aft-size)
   (ad-activate 'linum-after-scroll 'linum-aft-scl)
-  (add-hook 'pre-command-hook 'unhighlight-current-line))
+  (add-hook 'pre-command-hook 'hlinum-unhighlight-current-line))
 
 ;;;###autoload
 (defun hlinum-deactivate ()
   "Disable highlighting current line number."
   (interactive)
-  (remove-hook 'pre-command-hook 'unhighlight-current-line)
+  (remove-hook 'pre-command-hook 'hlinum-unhighlight-current-line)
   (ad-deactivate 'linum-update-current)
   (ad-deactivate 'linum-after-size)
   (ad-deactivate 'linum-after-scroll))
