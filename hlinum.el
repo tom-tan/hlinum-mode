@@ -25,6 +25,7 @@
 ;;
 ;; To use this package, add these lines to your .emacs file:
 ;;     (require 'hlinum)
+;;     (hlinum-activate)
 ;; And by using M-x linum-mode, you can see line numbers
 ;; with highlighting current line number.
 ;;
@@ -77,14 +78,31 @@ Otherwise hlinum will highlight only in the active buffer."
   (unless linum-highlight-in-all-buffersp
     (linum-color 'linum)))
 
-(add-hook 'pre-command-hook 'unhighlight-current-line)
-(defadvice linum-update-current (after linum-aft-cur activate)
+(defadvice linum-update-current (after linum-aft-cur)
   (highlight-current-line))
-(defadvice linum-after-size (after linum-aft-size activate)
+(defadvice linum-after-size (after linum-aft-size)
   (highlight-current-line))
-(defadvice linum-after-scroll (after linum-aft-scl activate)
+(defadvice linum-after-scroll (after linum-aft-scl)
   (when (eq (current-buffer) (window-buffer))
     (highlight-current-line)))
+
+;;;###autoload
+(defun hlinum-activate ()
+  "Enable highlighting current line number."
+  (interactive)
+  (ad-activate 'linum-update-current 'linum-aft-cur)
+  (ad-activate 'linum-after-size 'linum-aft-size)
+  (ad-activate 'linum-after-scroll 'linum-aft-scl)
+  (add-hook 'pre-command-hook 'unhighlight-current-line))
+
+;;;###autoload
+(defun hlinum-deactivate ()
+  "Disable highlighting current line number."
+  (interactive)
+  (remove-hook 'pre-command-hook 'unhighlight-current-line)
+  (ad-deactivate 'linum-update-current)
+  (ad-deactivate 'linum-after-size)
+  (ad-deactivate 'linum-after-scroll))
 
 (provide 'hlinum)
 ;;; hlinum.el ends here
