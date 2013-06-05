@@ -4,6 +4,7 @@
 
 ;; Author: Tomoya Tanjo <ttanjo@gmail.com>
 ;; URL: http://code.google.com/p/hlinum-mode/
+;; Package-Requires: ((cl-lib "0.2"))
 ;; Keywords: convenience, extensions
 
 ;; This program is free software; you can redistribute it and/or modify
