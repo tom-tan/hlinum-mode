@@ -51,6 +51,7 @@
   nil
   "Non-nil means hlinum highlights current line in all buffers.
 Otherwise hlinum will highlight only in the active buffer."
+  :type 'boolean
   :group 'linum)
 
 (defun hlinum-color (face)
