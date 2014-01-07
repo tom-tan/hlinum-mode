@@ -1,6 +1,6 @@
 ;;; hlinum.el --- Extension for linum.el to highlight current line number
 
-;; Copyright (C) 2011-2013  by Tomoya Tanjo
+;; Copyright (C) 2011-2014  by Tomoya Tanjo
 
 ;; Author: Tomoya Tanjo <ttanjo@gmail.com>
 ;; URL: http://code.google.com/p/hlinum-mode/
