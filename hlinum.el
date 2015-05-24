@@ -3,7 +3,7 @@
 ;; Copyright (C) 2011-2015  by Tomoya Tanjo
 
 ;; Author: Tomoya Tanjo <ttanjo@gmail.com>
-;; URL: http://code.google.com/p/hlinum-mode/
+;; URL: https://github.com/tom-tan/hlinum-mode/
 ;; Package-Requires: ((cl-lib "0.2"))
 ;; Keywords: convenience, extensions
 
