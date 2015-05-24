@@ -82,6 +82,13 @@ If LINE is nil, highlight current line."
   (unless linum-highlight-in-all-buffersp
     (hlinum-color 'linum line)))
 
+(defun hlinum-highlight-region ()
+  (when mark-active
+    (cl-loop for l
+             from (line-number-at-pos (region-beginning))
+             to   (line-number-at-pos (region-end))
+             do   (hlinum-highlight-line l))))
+
 (defadvice linum-update-current (after linum-aft-cur)
   (hlinum-highlight-line))
 (defadvice linum-after-size (after linum-aft-size)
@@ -97,13 +104,15 @@ If LINE is nil, highlight current line."
   (ad-activate 'linum-update-current 'linum-aft-cur)
   (ad-activate 'linum-after-size 'linum-aft-size)
   (ad-activate 'linum-after-scroll 'linum-aft-scl)
-  (add-hook 'pre-command-hook 'hlinum-unhighlight-line))
+  (add-hook 'pre-command-hook 'hlinum-unhighlight-line)
+  (add-hook 'post-command-hook 'hlinum-highlight-region))
 
 ;;;###autoload
 (defun hlinum-deactivate ()
   "Disable highlighting current line number."
   (interactive)
   (remove-hook 'pre-command-hook 'hlinum-unhighlight-line)
+  (remove-hook 'post-command-hook 'hlinum-highlight-region)
   (ad-deactivate 'linum-update-current)
   (ad-deactivate 'linum-after-size)
   (ad-deactivate 'linum-after-scroll))
