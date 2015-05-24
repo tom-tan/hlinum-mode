@@ -54,9 +54,11 @@ Otherwise hlinum will highlight only in the active buffer."
   :type 'boolean
   :group 'linum)
 
-(defun hlinum-color (face)
-  "Highlight current line number by using face FACE."
+(defun hlinum-color (face &optional line)
+  "Highlight line number LINE by using face FACE.
+If LINE is nil, highlight current line."
   (save-excursion
+    (when line (forward-line (- line (line-number-at-pos))))
     (let* ((pt (max (window-start)
                     (progn (move-beginning-of-line nil)
                            (point))))
@@ -74,19 +76,19 @@ Otherwise hlinum will highlight only in the active buffer."
           (overlay-put nov 'before-string str)
           (overlay-put nov 'linum-str lstr))))))
 
-(defun hlinum-highlight-current-line ()
-  (hlinum-color 'linum-highlight-face))
-(defun hlinum-unhighlight-current-line ()
+(defun hlinum-highlight-line (&optional line)
+  (hlinum-color 'linum-highlight-face line))
+(defun hlinum-unhighlight-line (&optional line)
   (unless linum-highlight-in-all-buffersp
-    (hlinum-color 'linum)))
+    (hlinum-color 'linum line)))
 
 (defadvice linum-update-current (after linum-aft-cur)
-  (hlinum-highlight-current-line))
+  (hlinum-highlight-line))
 (defadvice linum-after-size (after linum-aft-size)
-  (hlinum-highlight-current-line))
+  (hlinum-highlight-line))
 (defadvice linum-after-scroll (after linum-aft-scl)
   (when (eq (current-buffer) (window-buffer))
-    (hlinum-highlight-current-line)))
+    (hlinum-highlight-line)))
 
 ;;;###autoload
 (defun hlinum-activate ()
@@ -95,13 +97,13 @@ Otherwise hlinum will highlight only in the active buffer."
   (ad-activate 'linum-update-current 'linum-aft-cur)
   (ad-activate 'linum-after-size 'linum-aft-size)
   (ad-activate 'linum-after-scroll 'linum-aft-scl)
-  (add-hook 'pre-command-hook 'hlinum-unhighlight-current-line))
+  (add-hook 'pre-command-hook 'hlinum-unhighlight-line))
 
 ;;;###autoload
 (defun hlinum-deactivate ()
   "Disable highlighting current line number."
   (interactive)
-  (remove-hook 'pre-command-hook 'hlinum-unhighlight-current-line)
+  (remove-hook 'pre-command-hook 'hlinum-unhighlight-line)
   (ad-deactivate 'linum-update-current)
   (ad-deactivate 'linum-after-size)
   (ad-deactivate 'linum-after-scroll))
