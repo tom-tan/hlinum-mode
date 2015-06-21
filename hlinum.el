@@ -89,11 +89,7 @@ If LINE is nil, highlight current line."
              to   (line-number-at-pos (region-end))
              do   (hlinum-highlight-line l))))
 
-(defadvice linum-update-current (after linum-aft-cur)
-  (hlinum-highlight-line))
-(defadvice linum-after-size (after linum-aft-size)
-  (hlinum-highlight-line))
-(defadvice linum-after-scroll (after linum-aft-scl)
+(defun hlinum-after-scroll ()
   (when (eq (current-buffer) (window-buffer))
     (hlinum-highlight-line)))
 
@@ -101,9 +97,8 @@ If LINE is nil, highlight current line."
 (defun hlinum-activate ()
   "Enable highlighting current line number."
   (interactive)
-  (ad-activate 'linum-update-current 'linum-aft-cur)
-  (ad-activate 'linum-after-size 'linum-aft-size)
-  (ad-activate 'linum-after-scroll 'linum-aft-scl)
+  (advice-add 'linum-update-current :after 'hlinum-highlight-line)
+  (advice-add 'linum-after-scroll :after 'hlinum-after-scroll)
   (add-hook 'pre-command-hook 'hlinum-unhighlight-line)
   (add-hook 'post-command-hook 'hlinum-highlight-region))
 
@@ -113,9 +108,8 @@ If LINE is nil, highlight current line."
   (interactive)
   (remove-hook 'pre-command-hook 'hlinum-unhighlight-line)
   (remove-hook 'post-command-hook 'hlinum-highlight-region)
-  (ad-deactivate 'linum-update-current)
-  (ad-deactivate 'linum-after-size)
-  (ad-deactivate 'linum-after-scroll))
+  (advice-remove 'linum-update-current 'hlinum-highlight-line)
+  (advice-remove 'linum-after-scroll 'hlinum-after-scroll))
 
 (provide 'hlinum)
 ;;; hlinum.el ends here

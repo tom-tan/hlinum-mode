@@ -1,6 +1,7 @@
 # hlinum-mode
 
 This library extends linum-mode to highlight current line number.
+It requires Emacs 24.4 or later.
 
 To use this package, add these lines to your .emacs file:
 ```elisp
