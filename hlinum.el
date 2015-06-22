@@ -89,7 +89,7 @@ If LINE is nil, highlight current line."
              to   (line-number-at-pos (region-end))
              do   (hlinum-highlight-line l))))
 
-(defun hlinum-after-scroll ()
+(defun hlinum-after-scroll (win start)
   (when (eq (current-buffer) (window-buffer))
     (hlinum-highlight-line)))
 
