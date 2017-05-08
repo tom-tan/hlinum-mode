@@ -69,7 +69,7 @@ If LINE is nil, highlight current line."
         (let* ((str (overlay-get ov 'before-string))
                (lstr (overlay-get ov 'linum-str))
                (nov (move-overlay ov pt pt)))
-          (add-text-properties 0 (string-width lstr)
+          (add-text-properties 0 (length lstr)
                                `(face ,face) lstr)
           (add-text-properties 0 1 `(display ((margin left-margin)
                                               ,lstr)) str)
