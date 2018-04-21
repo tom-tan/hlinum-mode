@@ -91,7 +91,9 @@ If LINE is nil, highlight current line."
 
 (defun hlinum-after-scroll (win start)
   (when (eq (current-buffer) (window-buffer))
-    (hlinum-highlight-line)))
+    (if mark-active
+        (hlinum-highlight-region)
+      (hlinum-highlight-line))))
 
 ;;;###autoload
 (defun hlinum-activate ()
