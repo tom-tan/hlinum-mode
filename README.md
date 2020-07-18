@@ -1,3 +1,12 @@
+# Notice
+
+This package is obsolete because there is a better alternative in Emacs 26 and later.
+
+Emacs 26 officially provides the `display-line-numbers` function to show the line numbers and you can use the `line-number-current-line`
+ face to highlight the current line number.
+They show the better performance than `linum-mode` and `hlinum-mode`.
+
+
 # hlinum-mode
 
 This library extends linum-mode to highlight current line number.
